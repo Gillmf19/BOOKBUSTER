@@ -1,0 +1,63 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.user
+*.pdb
+
+# Build results
+bin/
+obj/
+*.log
+
+# Debugging files
+*.tlog
+*.ilk
+*.idb
+*.obj
+*.pch
+*.pdb
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# SQL Server Express
+*.mdf
+*.ldf
+*.sdf
+
+# Publish outputs
+.publish/
+
+# Windows-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE specific
+.idea/
+.vscode/
+
+# Logs
+*.log
+*.tlog
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+*.bak
+*.swp
+*~
+
+# Environment files
+.env
+.env.local
