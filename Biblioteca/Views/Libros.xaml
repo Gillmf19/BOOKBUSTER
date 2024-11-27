@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="Biblioteca.Views.Libros"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#F4F4F9" Height="379" Width="981">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Formulario -->
+            <RowDefinition Height="*"/>
+            <!-- Tabla -->
+        </Grid.RowDefinitions>
+
+        <!-- Formulario -->
+        <!-- Tabla -->
+        <DataGrid Grid.Row="1" x:Name="TablaLibros" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,10,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="*"/>
+                <DataGridTextColumn Header="Autor" Binding="{Binding Autor}" Width="*"/>
+                <DataGridTextColumn Header="Año" Binding="{Binding Ano}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="0" Background="White" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Título:" FontWeight="Bold" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,10,0"/>
+            <TextBox x:Name="TxtTitulo" Height="30" Margin="56,46,66,43" Grid.ColumnSpan="2"/>
+
+            <TextBlock Text="Autor:" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="0" Margin="5,10,5,0"/>
+            <TextBox x:Name="TxtAutor" Margin="10,81,733,10" Grid.Column="1"/>
+
+            <TextBlock Text="Año de Publicación:" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="0" Margin="5,88,5,0" RenderTransformOrigin="0.443,-0.398"/>
+            <TextBox x:Name="TxtAno" Height="30" Margin="56,3,65,86" Grid.ColumnSpan="2"/>
+            <Button Content="Guardar" Background="#FF8C00" Foreground="White" Height="40" Width="100" 
+                    HorizontalAlignment="Left" Margin="724,301,0,-222" Grid.Column="1"/>
+        </Grid>
+
+        <!-- Tabla -->
+    </Grid>
+</UserControl>
