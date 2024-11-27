@@ -14,7 +14,7 @@ namespace Biblioteca
             UsuariosButton.Click += (s, e) => NavegarA(new Usuarios());
             LibrosButton.Click += (s, e) => NavegarA(new Libros());
             PrestamosButton.Click += (s, e) => NavegarA(new Prestamos());
-            ConfiguracionButton.Click += (s, e) => NavegarA(new Configuracion());
+
         }
 
         /// <summary>
