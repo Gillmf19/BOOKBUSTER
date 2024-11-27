@@ -26,15 +26,13 @@
             Background="#FF8C00" BorderBrush="Black" BorderThickness="1" Margin="250,283,250,253"/>
             <Button x:Name="PrestamosButton" Content="Préstamos" Foreground="White"
             Background="#FF8C00" BorderBrush="Black" BorderThickness="1" Margin="466,283,34,253"/>
-            <Button x:Name="ConfiguracionButton" Content="Configuración" Foreground="White"
-            Background="#FF8C00" BorderBrush="Black" BorderThickness="1" Margin="237,491,263,46"/>
+
 
 
             <Image Margin="371,-46,0,418" Source="/Logo.png" Stretch="Fill"/>
             <Image Margin="252,136,278,306" Source="/Image6.png" Stretch="Fill"/>
             <Image Margin="62,136,469,306" Source="/Image7.png" Stretch="Fill"/>
             <Image Margin="466,136,65,306" Source="/Image8.png" Stretch="Fill"/>
-            <Image Margin="250,344,281,98" Source="/Image9.png" Stretch="Fill"/>
         </Grid>
     </DockPanel>
 </Window>
