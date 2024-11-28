@@ -135,9 +135,38 @@ namespace Biblioteca.Views
                 textBox.Foreground = System.Windows.Media.Brushes.Gray;
             }
         }
+
+        // Método que maneja la eliminación de un préstamo
+        private void BtnEliminar_Click(object sender, RoutedEventArgs e)
+        {
+            // Verificar si hay una fila seleccionada en la DataGrid
+            var prestamoSeleccionado = TablaPrestamos.SelectedItem as Prestamo;
+
+            if (prestamoSeleccionado != null)
+            {
+                // Preguntar al usuario si está seguro de eliminar el préstamo
+                var resultado = MessageBox.Show($"¿Estás seguro de eliminar el préstamo de '{prestamoSeleccionado.Libro}'?",
+                                                 "Confirmar Eliminación", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (resultado == MessageBoxResult.Yes)
+                {
+                    // Eliminar el préstamo de la lista
+                    PrestamosList.Remove(prestamoSeleccionado);
+
+                    // Guardar los cambios en el archivo JSON
+                    GuardarPrestamos();
+
+                    MessageBox.Show("Préstamo eliminado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, selecciona un préstamo para eliminar.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
     }
 
-    // Clase para representar un préstamo
+    // Clase de préstamo
     public class Prestamo
     {
         public string Usuario { get; set; }

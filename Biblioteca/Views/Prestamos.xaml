@@ -44,10 +44,14 @@
             <!-- Botón de Registrar -->
             <Button Content="Registrar Préstamo" Background="#4CAF50" Foreground="White" Height="35" Width="200" 
                     Grid.Column="3" HorizontalAlignment="Left" Margin="116,113,0,-58" Click="BtnRegistrar_Click"/>
+
+            <!-- Botón de Eliminar -->
+            <Button Content="Eliminar Préstamo" Background="#F44336" Foreground="White" Width="117" 
+                    Grid.Column="3" HorizontalAlignment="Left" Margin="199,183,0,-76" Click="BtnEliminar_Click"/>
         </Grid>
 
         <!-- Buscador -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,15,0,0" VerticalAlignment="Top">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,35,0,0" VerticalAlignment="Top">
             <TextBox x:Name="TxtBuscar" Width="300" Height="35" Padding="5" 
                      Text="Buscar por usuario o libro" Foreground="Gray"
                      GotFocus="TxtBuscar_GotFocus"
