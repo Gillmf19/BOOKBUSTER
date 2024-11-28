@@ -1,43 +1,61 @@
 ﻿<UserControl x:Class="Biblioteca.Views.Libros"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="#FF0339AC" Height="379" Width="981">
+             Background="#F4F4F9" Height="600" Width="900">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Formulario -->
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <!-- Tabla -->
         </Grid.RowDefinitions>
 
-        <!-- Formulario -->
-        <!-- Tabla -->
-        <DataGrid Grid.Row="1" x:Name="TablaLibros" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,10,0,0">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
-                <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="*"/>
-                <DataGridTextColumn Header="Autor" Binding="{Binding Autor}" Width="*"/>
-                <DataGridTextColumn Header="Año" Binding="{Binding Ano}" Width="100"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Grid Grid.Row="0" Background="White" Margin="0,0,0,10">
+        <!-- Título -->
+        <DockPanel Grid.Row="0" Margin="0,10">
+            <TextBlock DockPanel.Dock="Left" Text="Gestión de Libros" 
+                       FontSize="24" FontWeight="Bold" Foreground="#2D3E50" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </DockPanel>
+
+        <!-- Formulario para agregar libro -->
+        <Grid Grid.Row="1" Background="White" Margin="0,20,0,10">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Título:" FontWeight="Bold" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,10,0"/>
-            <TextBox x:Name="TxtTitulo" Height="30" Margin="56,46,66,43" Grid.ColumnSpan="2"/>
+            <!-- Título del libro -->
+            <TextBlock Grid.Column="0" Text="Título:" FontWeight="Bold" VerticalAlignment="Top" Margin="0,20,10,0"/>
+            <TextBox x:Name="TxtTitulo" Height="30" Margin="55,13,74,47" Grid.ColumnSpan="2"/>
 
-            <TextBlock Text="Autor:" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="0" Margin="5,10,5,0"/>
-            <TextBox x:Name="TxtAutor" Margin="10,81,733,10" Grid.Column="1"/>
+            <!-- Autor -->
+            <TextBlock Grid.Column="2" Text="Autor:" FontWeight="Bold" VerticalAlignment="Top" Margin="5,55,5,0"/>
+            <TextBox x:Name="TxtAutor" Grid.Column="2" Height="30" Grid.ColumnSpan="2" Margin="59,50,60,10"/>
 
-            <TextBlock Text="Año de Publicación:" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="0" Margin="5,88,5,0" RenderTransformOrigin="0.443,-0.398"/>
-            <TextBox x:Name="TxtAno" Height="30" Margin="56,3,65,86" Grid.ColumnSpan="2"/>
-            <Button Content="Guardar" Background="#FF0339AC" Foreground="White" Height="40" Width="100" 
-                    HorizontalAlignment="Left" Margin="724,301,0,-222" Grid.Column="1"/>
+            <!-- Año -->
+            <TextBlock Grid.Column="0" Text="Año:" FontWeight="Bold" VerticalAlignment="Top" Margin="0,64,0,0"/>
+            <TextBox x:Name="TxtAno" Grid.Column="1" Height="30" Margin="10,60,10,0"/>
+
+            <!-- Botón para agregar -->
+            <Button Content="Agregar Libro" Background="#4CAF50" Foreground="White" Height="35" Width="200" 
+                    Grid.Column="3" HorizontalAlignment="Left" Margin="116,113,0,-58" Click="BtnAgregar_Click"/>
         </Grid>
 
-        <!-- Tabla -->
+        <!-- Tabla de Libros -->
+        <DataGrid Grid.Row="2" x:Name="TablaLibros" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,70,0,0" ItemsSource="{Binding Libros}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="250"/>
+                <DataGridTextColumn Header="Autor" Binding="{Binding Autor}" Width="250"/>
+                <DataGridTextColumn Header="Año" Binding="{Binding Ano}" Width="150"/>
+                <DataGridTemplateColumn Header="Eliminar" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Eliminar" Background="Red" Foreground="White" Click="BtnEliminar_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
