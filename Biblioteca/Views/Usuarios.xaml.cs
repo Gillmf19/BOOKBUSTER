@@ -18,7 +18,6 @@ namespace Biblioteca.Views
         private void TxtBuscar_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Aquí puedes filtrar la tabla por nombre o correo
-            MessageBox.Show($"Buscando: {TxtBuscar.Text}");
         }
 
         private void Editar_Click(object sender, RoutedEventArgs e)

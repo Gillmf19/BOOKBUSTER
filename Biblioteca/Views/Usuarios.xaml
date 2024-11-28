@@ -138,7 +138,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Content="Editar" Background="#FFC107" Foreground="White" Width="60" Height="25" Margin="5,0" Click="Editar_Click"/>
+                                    <Button Content="Editar" Background="#0339ac" Foreground="White" Width="60" Height="25" Margin="5,0" Click="Editar_Click"/>
                                     <Button Content="Eliminar" Background="#F44336" Foreground="White" Width="60" Height="25" Margin="5,0" Click="Eliminar_Click"/>
                                 </StackPanel>
                             </DataTemplate>
