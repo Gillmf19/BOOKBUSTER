@@ -1,6 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Biblioteca.Views
 {
@@ -11,45 +11,55 @@ namespace Biblioteca.Views
             InitializeComponent();
         }
 
-        // Evento del botón "Registrar Préstamo"
-        private void BtnRegistrar_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Evento para limpiar el texto predeterminado cuando se hace clic en el campo de búsqueda.
+        /// </summary>
+        private void TxtBuscar_GotFocus(object sender, RoutedEventArgs e)
         {
-            string usuario = TxtUsuario.Text;
-            string libro = TxtLibro.Text;
-            DateTime? fechaPrestamo = FechaPrestamo.SelectedDate;
-            DateTime? fechaDevolucion = FechaDevolucion.SelectedDate;
-
-            if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(libro) ||
-                !fechaPrestamo.HasValue || !fechaDevolucion.HasValue)
+            if (TxtBuscar.Text == "Buscar por usuario o libro")
             {
-                MessageBox.Show("Por favor, complete todos los campos.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                TxtBuscar.Text = string.Empty; // Limpiar texto inicial
+                TxtBuscar.Foreground = Brushes.Black; // Cambiar el color del texto a negro
             }
-
-            MessageBox.Show($"Préstamo registrado:\nUsuario: {usuario}\nLibro: {libro}\nFecha Préstamo: {fechaPrestamo.Value.ToShortDateString()}\nFecha Devolución: {fechaDevolucion.Value.ToShortDateString()}",
-                            "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        // Evento del botón "Buscar"
+        /// <summary>
+        /// Evento para restaurar el texto predeterminado si el usuario no escribe nada.
+        /// </summary>
+        private void TxtBuscar_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TxtBuscar.Text))
+            {
+                TxtBuscar.Text = "Buscar por usuario o libro"; // Restaurar texto inicial
+                TxtBuscar.Foreground = Brushes.Gray; // Cambiar el color del texto a gris
+            }
+        }
+
+        /// <summary>
+        /// Evento para manejar el clic en el botón de búsqueda.
+        /// </summary>
         private void BtnBuscar_Click(object sender, RoutedEventArgs e)
         {
-            string textoBusqueda = TxtBuscar.Text;
+            var textoBusqueda = TxtBuscar.Text;
 
-            if (string.IsNullOrWhiteSpace(textoBusqueda))
+            if (textoBusqueda != "Buscar por usuario o libro" && !string.IsNullOrWhiteSpace(textoBusqueda))
             {
-                MessageBox.Show("Ingrese un término de búsqueda.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                // Lógica para buscar por usuario o libro (modificar según sea necesario)
+                MessageBox.Show($"Buscando: {textoBusqueda}");
             }
-
-            // Simulación de búsqueda (sin base de datos implementada aún)
-            MessageBox.Show($"Buscando préstamos para: {textoBusqueda}", "Búsqueda", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+            {
+                MessageBox.Show("Por favor, introduce un texto válido para buscar.");
+            }
         }
 
-        // Evento del botón "Volver al Menú"
-        private void BtnVolver_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Evento para manejar el clic en el botón Registrar Préstamo.
+        /// </summary>
+        private void BtnRegistrar_Click(object sender, RoutedEventArgs e)
         {
-            // Simulación de regreso al menú principal
-            MessageBox.Show("Volviendo al menú principal.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+            // Lógica para registrar un préstamo (modificar según sea necesario)
+            MessageBox.Show("Préstamo registrado exitosamente.");
         }
     }
 }

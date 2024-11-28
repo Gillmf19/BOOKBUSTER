@@ -15,7 +15,6 @@
             <TextBlock DockPanel.Dock="Left" Text="Préstamo de Libros" 
                        FontSize="24" FontWeight="Bold" Foreground="#2D3E50" 
                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <!-- Botón Volver al Menú -->
         </DockPanel>
 
         <!-- Formulario -->
@@ -50,7 +49,10 @@
 
         <!-- Buscador -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,15,0,0" VerticalAlignment="Top">
-            <TextBox x:Name="TxtBuscar" Width="300" Height="35" Padding="5" Text="Buscar por usuario o libro"/>
+            <TextBox x:Name="TxtBuscar" Width="300" Height="35" Padding="5" Text="Buscar por usuario o libro"
+                     Foreground="Gray" 
+                     GotFocus="TxtBuscar_GotFocus"
+                     LostFocus="TxtBuscar_LostFocus"/>
             <Button Content="Buscar" Background="#2196F3" Foreground="White" Height="35" Width="100" Click="BtnBuscar_Click"/>
         </StackPanel>
 
