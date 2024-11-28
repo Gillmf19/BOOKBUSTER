@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Biblioteca.Views.Libros"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="#F4F4F9" Height="379" Width="981">
+             Background="#FF0339AC" Height="379" Width="981">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,7 +34,7 @@
 
             <TextBlock Text="Año de Publicación:" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="0" Margin="5,88,5,0" RenderTransformOrigin="0.443,-0.398"/>
             <TextBox x:Name="TxtAno" Height="30" Margin="56,3,65,86" Grid.ColumnSpan="2"/>
-            <Button Content="Guardar" Background="#FF8C00" Foreground="White" Height="40" Width="100" 
+            <Button Content="Guardar" Background="#FF0339AC" Foreground="White" Height="40" Width="100" 
                     HorizontalAlignment="Left" Margin="724,301,0,-222" Grid.Column="1"/>
         </Grid>
 
