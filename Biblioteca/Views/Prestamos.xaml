@@ -9,7 +9,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Título -->
+        <!-- Títulopne -->
         <DockPanel Grid.Row="0" Margin="0,10">
             <TextBlock DockPanel.Dock="Left" Text="Préstamo de Libros" 
                        FontSize="24" FontWeight="Bold" Foreground="#2D3E50" 
