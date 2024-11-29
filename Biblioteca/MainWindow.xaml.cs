@@ -38,7 +38,7 @@ namespace Biblioteca
             {
                 Content = "Volver al menú",
                 Foreground = System.Windows.Media.Brushes.White,
-                Background = System.Windows.Media.Brushes.Orange,
+                Background = System.Windows.Media.Brushes.Black,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(10)
