@@ -194,6 +194,24 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Play_Books_30007.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="rotation_102346.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="business-color_books_icon-icons.com_53474.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="business-color_books_icon-icons.com_53474 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="rotation_102346 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Play_Books_30007 %281%29.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
