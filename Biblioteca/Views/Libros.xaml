@@ -5,7 +5,7 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Formulario -->
+            <!-- Formularios -->
             <RowDefinition Height="*"/>
             <!-- Tabla -->
         </Grid.RowDefinitions>
