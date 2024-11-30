@@ -7,19 +7,10 @@
             <RowDefinition Height="Auto"/>
             <!-- Formularios -->
             <RowDefinition Height="*"/>
-            <!-- Tabla -->
+            <!-- Lista de Libros -->
         </Grid.RowDefinitions>
 
-        <!-- Formulario -->
-        <!-- Tabla -->
-        <DataGrid Grid.Row="1" x:Name="TablaLibros" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,10,0,0">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
-                <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="*"/>
-                <DataGridTextColumn Header="Autor" Binding="{Binding Autor}" Width="*"/>
-                <DataGridTextColumn Header="Año" Binding="{Binding Ano}" Width="100"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <!-- Formulario para agregar un libro -->
         <Grid Grid.Row="0" Background="White" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -32,12 +23,29 @@
             <TextBlock Text="Autor:" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="0" Margin="5,10,5,0"/>
             <TextBox x:Name="TxtAutor" Margin="10,81,733,10" Grid.Column="1"/>
 
-            <TextBlock Text="Año de Publicación:" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="0" Margin="5,88,5,0" RenderTransformOrigin="0.443,-0.398"/>
+            <TextBlock Text="Año de Publicación:" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="0" Margin="5,88,5,0"/>
             <TextBox x:Name="TxtAno" Height="30" Margin="56,3,65,86" Grid.ColumnSpan="2"/>
+
+            <TextBlock Text="Imagen:" FontWeight="Bold" VerticalAlignment="Top" Grid.Column="0" Margin="5,10,5,0"/>
+            <Button Content="Seleccionar Imagen" Height="30" Width="200" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="56,3,65,86" Click="SeleccionarImagen_Click"/>
+
+            <Image x:Name="ImgLibro" Width="100" Height="100" HorizontalAlignment="Left" Margin="56,3,65,86" Grid.ColumnSpan="2"/>
+
             <Button Content="Guardar" Background="#FF8C00" Foreground="White" Height="40" Width="100" 
-                    HorizontalAlignment="Left" Margin="724,301,0,-222" Grid.Column="1"/>
+                    HorizontalAlignment="Left" Margin="724,301,0,-222" Grid.Column="1" Click="Guardar_Click"/>
         </Grid>
 
-        <!-- Tabla -->
+        <!-- ListBox para mostrar los libros -->
+        <ListBox Grid.Row="1" x:Name="ListaLibros" DisplayMemberPath="Titulo" SelectionMode="Single" 
+                 HorizontalAlignment="Stretch" Margin="0,10,0,0" SelectionChanged="ListaLibros_SelectionChanged">
+        </ListBox>
+
+        <!-- Botones para editar y eliminar -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10">
+            <Button Content="Editar" Background="#008CBA" Foreground="White" Height="40" Width="100" Margin="10" Click="Editar_Click"/>
+            <Button Content="Eliminar" Background="#FF5733" Foreground="White" Height="40" Width="100" Margin="10" Click="Eliminar_Click"/>
+        </StackPanel>
     </Grid>
 </UserControl>
+
+

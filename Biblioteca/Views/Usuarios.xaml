@@ -16,11 +16,11 @@
         </Grid.RowDefinitions>
 
         <!-- Title -->
-        <TextBlock Text="Gestión de Usuarios"
+        <TextBlock
                    FontSize="28" FontWeight="Bold"
                    Foreground="White"
                    HorizontalAlignment="Center"
-                   Margin="0,10,0,20" />
+                   Margin="0,10,0,20" ><Run Text="Gestión de "/><Run Language="es-mx" Text="Lectores"/></TextBlock>
 
         <!-- Form -->
         <Border Background="#FFF1F1F1" CornerRadius="8" Padding="15" Margin="0,110,0,134" 
