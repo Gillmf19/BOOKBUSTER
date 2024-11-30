@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Usuario -->
-            <TextBlock Grid.Column="0" Text="Usuario:" FontWeight="Bold" VerticalAlignment="Top" Margin="0,20,10,0" Foreground="Black"/>
+            <TextBlock Grid.Column="0" FontWeight="Bold" VerticalAlignment="Top" Margin="12,20,323,0" Foreground="Black" Text="Lector:" Grid.ColumnSpan="2"/>
             <TextBox x:Name="TxtUsuario" Height="30" Margin="55,13,74,47" Grid.ColumnSpan="2"/>
 
             <!-- Libro -->
