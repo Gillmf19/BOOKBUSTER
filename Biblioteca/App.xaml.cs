@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Biblioteca
 {
-    /// <summary>
-    /// Lógica de interacción para App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            // Abrir la ventana de Login al iniciar la aplicación
+            var loginWindow = new Views.LoginWindow();
+            loginWindow.Show();
+        }
     }
 }

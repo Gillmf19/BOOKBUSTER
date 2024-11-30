@@ -4,10 +4,7 @@
         Title="Gestión de Biblioteca" Height="600" Width="900"
         WindowStartupLocation="CenterScreen">
     <DockPanel Background="#FF0052A5">
-        <!-- Contenido principal -->
         <Grid Background="#FF0052A5" HorizontalAlignment="Center">
-
-
             <!-- Botones -->
             <Button x:Name="UsuariosButton" Margin="30,370,0,130" 
                     HorizontalAlignment="Left" Foreground="White" Content="Usuarios"
@@ -21,14 +18,6 @@
                     HorizontalAlignment="Left" Foreground="White" Content="Préstamos"
                     BorderThickness="1" BorderBrush="Black" Background="#FF010102" 
                     Width="247" FontSize="36"/>
-
-            <!-- Imágenes -->
-            <Image Margin="634,-33,0,392" Source="/Logo.png" Stretch="Fill" 
-                   HorizontalAlignment="Left" Width="240"/>
-            <Image Margin="326,135,326,228" Source="/business-color_books_icon-icons.com_53474 (1).png" Stretch="Fill"/>
-            <Image Margin="30,135,623,236" Source="/rotation_102346 (1).png" Stretch="Fill"/>
-            <Image Margin="622,135,31,236" Source="/Play_Books_30007 (1).png" Stretch="Fill"/>
         </Grid>
-        <Image Source="/Play_Books_30007 (1).png" Stretch="Fill" Width="100"/>
     </DockPanel>
 </Window>
