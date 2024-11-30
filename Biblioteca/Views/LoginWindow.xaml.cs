@@ -86,12 +86,13 @@ namespace Biblioteca.Views
         private void AutenticacionExitosa(string usuario, string rol)
         {
             MessageBox.Show($"Bienvenido {usuario}.\nRol: {rol}", "Login Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
-            // Cerrar el formulario de login
-            this.Close();
+
             // Abrir la ventana principal
             var mainWindow = new MainWindow();
             mainWindow.Show();
 
+            // Cerrar el formulario de login
+            this.Close();
         }
     }
 }

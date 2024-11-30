@@ -10,6 +10,9 @@
         </Grid.RowDefinitions>
 
         <!-- Títulopne -->
+        <Image Margin="664,-47,10,38" Grid.RowSpan="2" Source="/Logo.png" Stretch="Fill"/>
+
+        <!-- Títulopne -->
         <DockPanel Grid.Row="0" Margin="0,10">
             <TextBlock DockPanel.Dock="Left" Text="Préstamo de Libros" 
                        FontSize="24" FontWeight="Bold" Foreground="White" 
@@ -53,10 +56,6 @@
                      Text="Buscar por usuario o libro" Foreground="Gray"
                      GotFocus="TxtBuscar_GotFocus"
                      LostFocus="TxtBuscar_LostFocus" Margin="0,17,580,347" Grid.Row="2"/>
-        <Button Content="Buscar" Background="Black" Foreground="White" 
-                    Click="BtnBuscar_Click" Margin="310,17,470,347" Grid.Row="2"/>
-
-        <!-- Buscador -->
 
         <!-- Tabla de Préstamos -->
         <DataGrid Grid.Row="2" x:Name="TablaPrestamos" AutoGenerateColumns="False" IsReadOnly="True" Margin="2,58,-2,71" ItemsSource="{Binding Prestamos}">
@@ -67,6 +66,7 @@
                 <DataGridTextColumn Header="Fecha de Devolución" Binding="{Binding FechaDevolucion}" Width="150"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Image Margin="664,-47,10,38" Grid.RowSpan="2" Source="/Logo.png" Stretch="Fill"/>
+        <Button Content="Buscar" Background="Black" Foreground="White" 
+                    Click="BtnBuscar_Click" Margin="310,17,470,347" Grid.Row="2"/>
     </Grid>
 </UserControl>
