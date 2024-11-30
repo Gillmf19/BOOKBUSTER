@@ -131,6 +131,11 @@ namespace Biblioteca.Views
         {
             libroSeleccionado = (Libro)ListaLibros.SelectedItem;
         }
+
+        private void TxtAutor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 
     public class Libro
