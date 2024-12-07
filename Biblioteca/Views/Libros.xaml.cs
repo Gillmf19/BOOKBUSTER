@@ -1,150 +1,166 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;  // Necesario para el OpenFileDialog
 
 namespace Biblioteca.Views
 {
     public partial class Libros : UserControl
     {
-        private List<Libro> libros = new List<Libro>();
-        private Libro libroSeleccionado;
+        // Ruta del archivo JSON para guardar la lista de libros
+        private const string ArchivoLibros = "libros.json";
+
+        public ObservableCollection<Libro> LibrosList { get; set; }
 
         public Libros()
         {
             InitializeComponent();
+
+            // Inicializar la lista de libros y cargar los datos
+            LibrosList = new ObservableCollection<Libro>();
             CargarLibros();
+
+            // Vincular la lista de libros a la DataGrid
+            TablaLibros.ItemsSource = LibrosList;
         }
 
-        // Método para cargar los libros en el ListBox
-        private void CargarLibros()
+        private void BtnAgregarLibro_Click(object sender, RoutedEventArgs e)
         {
-            libros.Add(new Libro { Id = 1, Titulo = "Cien Años de Soledad", Autor = "Gabriel García Márquez", Ano = "1967", ImagenRuta = "ruta_a_imagen.jpg" });
-            libros.Add(new Libro { Id = 2, Titulo = "1984", Autor = "George Orwell", Ano = "1949", ImagenRuta = "ruta_a_imagen2.jpg" });
-            ListaLibros.ItemsSource = null;
-            ListaLibros.ItemsSource = libros;
-        }
-
-        // Método para guardar un libro en la lista
-        private void GuardarLibro()
-        {
-            string titulo = TxtTitulo.Text;
-            string autor = TxtAutor.Text;
-            string ano = TxtAno.Text;
-            string imagenRuta = ImgLibro.Tag?.ToString(); // Usamos el Tag para guardar la ruta de la imagen
-
-            if (string.IsNullOrEmpty(titulo) || string.IsNullOrEmpty(autor) || string.IsNullOrEmpty(ano))
+            // Validar que los campos no estén vacíos
+            if (string.IsNullOrWhiteSpace(TxtTitulo.Text) || string.IsNullOrWhiteSpace(TxtAutor.Text) || string.IsNullOrWhiteSpace(TxtAnio.Text))
             {
-                MessageBox.Show("Por favor, complete todos los campos.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            int nuevoId = libros.Count > 0 ? libros.Max(x => x.Id) + 1 : 1;
-            var nuevoLibro = new Libro { Id = nuevoId, Titulo = titulo, Autor = autor, Ano = ano, ImagenRuta = imagenRuta };
-            libros.Add(nuevoLibro);
+            if (!int.TryParse(TxtAnio.Text, out int anio))
+            {
+                MessageBox.Show("El año debe ser un número válido.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            // Crear un nuevo libro
+            var nuevoLibro = new Libro
+            {
+                Titulo = TxtTitulo.Text,
+                Autor = TxtAutor.Text,
+                Anio = anio
+            };
+
+            // Agregarlo a la lista
+            LibrosList.Add(nuevoLibro);
+
+            // Guardar los datos
+            GuardarLibros();
+
+            // Limpiar los campos
             TxtTitulo.Clear();
             TxtAutor.Clear();
-            TxtAno.Clear();
-            ImgLibro.Source = null;  // Limpiar la imagen seleccionada
-            CargarLibros();
+            TxtAnio.Clear();
+
+            MessageBox.Show("Libro añadido exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        // Método para seleccionar una imagen
-        private void SeleccionarImagen_Click(object sender, RoutedEventArgs e)
+        private void BtnEliminarLibro_Click(object sender, RoutedEventArgs e)
         {
-            var dialogo = new OpenFileDialog();
-            dialogo.Filter = "Archivos de Imagen (*.jpg; *.png; *.gif)|*.jpg;*.png;*.gif";
-            if (dialogo.ShowDialog() == true)
+            // Verificar si hay un libro seleccionado
+            var libroSeleccionado = TablaLibros.SelectedItem as Libro;
+            if (libroSeleccionado != null)
             {
-                string rutaImagen = dialogo.FileName;
-                ImgLibro.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(rutaImagen));  // Mostrar la imagen seleccionada
-                ImgLibro.Tag = rutaImagen;  // Guardar la ruta de la imagen en el Tag
+                // Confirmar eliminación
+                var resultado = MessageBox.Show($"¿Está seguro de eliminar el libro '{libroSeleccionado.Titulo}'?",
+                    "Confirmar Eliminación", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (resultado == MessageBoxResult.Yes)
+                {
+                    // Eliminar libro
+                    LibrosList.Remove(libroSeleccionado);
+
+                    // Guardar cambios
+                    GuardarLibros();
+
+                    MessageBox.Show("Libro eliminado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, seleccione un libro para eliminar.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-        // Método para editar un libro
-        private void EditarLibro()
+        private void BtnBuscar_Click(object sender, RoutedEventArgs e)
         {
-            if (libroSeleccionado == null)
-            {
-                MessageBox.Show("Por favor, seleccione un libro para editar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            string textoBusqueda = TxtBuscar.Text.ToLower();
+            var librosFiltrados = LibrosList.Where(l =>
+                l.Titulo.ToLower().Contains(textoBusqueda) || l.Autor.ToLower().Contains(textoBusqueda)).ToList();
 
-            TxtTitulo.Text = libroSeleccionado.Titulo;
-            TxtAutor.Text = libroSeleccionado.Autor;
-            TxtAno.Text = libroSeleccionado.Ano;
-            ImgLibro.Tag = libroSeleccionado.ImagenRuta;  // Recuperar la ruta de la imagen
-            if (!string.IsNullOrEmpty(libroSeleccionado.ImagenRuta))
-            {
-                ImgLibro.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(libroSeleccionado.ImagenRuta)); // Mostrar la imagen
-            }
-
-            libroSeleccionado.Titulo = TxtTitulo.Text;
-            libroSeleccionado.Autor = TxtAutor.Text;
-            libroSeleccionado.Ano = TxtAno.Text;
-
-            CargarLibros();
+            TablaLibros.ItemsSource = librosFiltrados;
         }
 
-        // Método para eliminar un libro
-        private void EliminarLibro()
+        private void TxtBuscar_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (libroSeleccionado == null)
+            if (TxtBuscar.Text == "Buscar por título o autor")
             {
-                MessageBox.Show("Por favor, seleccione un libro para eliminar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            var resultado = MessageBox.Show("¿Está seguro que desea eliminar este libro?", "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (resultado == MessageBoxResult.Yes)
-            {
-                libros.Remove(libroSeleccionado);
-                CargarLibros();
+                TxtBuscar.Text = string.Empty;
+                TxtBuscar.Foreground = System.Windows.Media.Brushes.Black;
             }
         }
 
-        // Evento para el botón de guardar
-        private void Guardar_Click(object sender, RoutedEventArgs e)
+        private void TxtBuscar_LostFocus(object sender, RoutedEventArgs e)
         {
-            GuardarLibro();
+            if (string.IsNullOrWhiteSpace(TxtBuscar.Text))
+            {
+                TxtBuscar.Text = "Buscar por título o autor";
+                TxtBuscar.Foreground = System.Windows.Media.Brushes.Gray;
+            }
         }
 
-        // Evento para el botón de editar
-        private void Editar_Click(object sender, RoutedEventArgs e)
+        private void CargarLibros()
         {
-            EditarLibro();
+            if (File.Exists(ArchivoLibros))
+            {
+                try
+                {
+                    var json = File.ReadAllText(ArchivoLibros);
+                    var librosGuardados = JsonSerializer.Deserialize<ObservableCollection<Libro>>(json);
+
+                    if (librosGuardados != null)
+                    {
+                        foreach (var libro in librosGuardados)
+                        {
+                            LibrosList.Add(libro);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al cargar los libros: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
-        // Evento para el botón de eliminar
-        private void Eliminar_Click(object sender, RoutedEventArgs e)
+        private void GuardarLibros()
         {
-            EliminarLibro();
-        }
-
-        // Evento para la selección de un libro en la lista
-        private void ListaLibros_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            libroSeleccionado = (Libro)ListaLibros.SelectedItem;
-        }
-
-        private void TxtAutor_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
+            try
+            {
+                var json = JsonSerializer.Serialize(LibrosList, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(ArchivoLibros, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al guardar los libros: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 
+    // Clase de libro
     public class Libro
     {
-        public int Id { get; set; }
         public string Titulo { get; set; }
         public string Autor { get; set; }
-        public string Ano { get; set; }
-        public string ImagenRuta { get; set; }
+        public int Anio { get; set; }
     }
 }
-
