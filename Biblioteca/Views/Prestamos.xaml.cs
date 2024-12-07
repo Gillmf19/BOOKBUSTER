@@ -1,4 +1,8 @@
-﻿using System;
+using System;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -6,50 +10,140 @@ namespace Biblioteca.Views
 {
     public partial class Prestamos : UserControl
     {
+        private const string ArchivoPrestamos = "prestamos.json";
+
+        public ObservableCollection<Prestamo> PrestamosList { get; set; }
+
         public Prestamos()
         {
             InitializeComponent();
+
+            PrestamosList = new ObservableCollection<Prestamo>();
+            CargarPrestamos();
+
+            TablaPrestamos.ItemsSource = PrestamosList;
         }
 
-        // Evento del botón "Registrar Préstamo"
         private void BtnRegistrar_Click(object sender, RoutedEventArgs e)
         {
-            string usuario = TxtUsuario.Text;
-            string libro = TxtLibro.Text;
-            DateTime? fechaPrestamo = FechaPrestamo.SelectedDate;
-            DateTime? fechaDevolucion = FechaDevolucion.SelectedDate;
-
-            if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(libro) ||
-                !fechaPrestamo.HasValue || !fechaDevolucion.HasValue)
+            if (string.IsNullOrWhiteSpace(TxtUsuario.Text) || string.IsNullOrWhiteSpace(TxtLibro.Text) ||
+                FechaPrestamo.SelectedDate == null || FechaDevolucion.SelectedDate == null)
             {
-                MessageBox.Show("Por favor, complete todos los campos.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            MessageBox.Show($"Préstamo registrado:\nUsuario: {usuario}\nLibro: {libro}\nFecha Préstamo: {fechaPrestamo.Value.ToShortDateString()}\nFecha Devolución: {fechaDevolucion.Value.ToShortDateString()}",
-                            "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            var nuevoPrestamo = new Prestamo
+            {
+                Usuario = TxtUsuario.Text,
+                Libro = TxtLibro.Text,
+                FechaPrestamo = FechaPrestamo.SelectedDate.Value,
+                FechaDevolucion = FechaDevolucion.SelectedDate.Value
+            };
+
+            PrestamosList.Add(nuevoPrestamo);
+            GuardarPrestamos();
+
+            TxtUsuario.Clear();
+            TxtLibro.Clear();
+            FechaPrestamo.SelectedDate = null;
+            FechaDevolucion.SelectedDate = null;
+
+            MessageBox.Show("Préstamo registrado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        // Evento del botón "Buscar"
+        private void CargarPrestamos()
+        {
+            if (File.Exists(ArchivoPrestamos))
+            {
+                try
+                {
+                    var json = File.ReadAllText(ArchivoPrestamos);
+                    var prestamosGuardados = JsonSerializer.Deserialize<ObservableCollection<Prestamo>>(json);
+
+                    if (prestamosGuardados != null)
+                    {
+                        foreach (var prestamo in prestamosGuardados)
+                        {
+                            PrestamosList.Add(prestamo);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al cargar los datos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void GuardarPrestamos()
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(PrestamosList, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(ArchivoPrestamos, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al guardar los datos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void BtnBuscar_Click(object sender, RoutedEventArgs e)
         {
-            string textoBusqueda = TxtBuscar.Text;
+            string textoBusqueda = TxtBuscar.Text.ToLower();
+            var prestamosFiltrados = PrestamosList
+                .Where(p => p.Usuario.ToLower().Contains(textoBusqueda) || p.Libro.ToLower().Contains(textoBusqueda));
 
-            if (string.IsNullOrWhiteSpace(textoBusqueda))
-            {
-                MessageBox.Show("Ingrese un término de búsqueda.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Simulación de búsqueda (sin base de datos implementada aún)
-            MessageBox.Show($"Buscando préstamos para: {textoBusqueda}", "Búsqueda", MessageBoxButton.OK, MessageBoxImage.Information);
+            TablaPrestamos.ItemsSource = prestamosFiltrados;
         }
 
-        // Evento del botón "Volver al Menú"
-        private void BtnVolver_Click(object sender, RoutedEventArgs e)
+        private void TxtBuscar_GotFocus(object sender, RoutedEventArgs e)
         {
-            // Simulación de regreso al menú principal
-            MessageBox.Show("Volviendo al menú principal.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (TxtBuscar.Text == "Buscar por usuario o libro")
+            {
+                TxtBuscar.Text = string.Empty;
+                TxtBuscar.Foreground = System.Windows.Media.Brushes.Black;
+            }
         }
+
+        private void TxtBuscar_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TxtBuscar.Text))
+            {
+                TxtBuscar.Text = "Buscar por usuario o libro";
+                TxtBuscar.Foreground = System.Windows.Media.Brushes.Gray;
+            }
+        }
+
+        private void BtnEliminar_Click(object sender, RoutedEventArgs e)
+        {
+            var prestamoSeleccionado = TablaPrestamos.SelectedItem as Prestamo;
+
+            if (prestamoSeleccionado != null)
+            {
+                var resultado = MessageBox.Show($"¿Estás seguro de eliminar el préstamo de '{prestamoSeleccionado.Libro}'?",
+                    "Confirmar Eliminación", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (resultado == MessageBoxResult.Yes)
+                {
+                    PrestamosList.Remove(prestamoSeleccionado);
+                    GuardarPrestamos();
+                    MessageBox.Show("Préstamo eliminado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, selecciona un préstamo para eliminar.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+    }
+
+    public class Prestamo
+    {
+        public string Usuario { get; set; }
+        public string Libro { get; set; }
+        public DateTime FechaPrestamo { get; set; }
+        public DateTime FechaDevolucion { get; set; }
     }
 }

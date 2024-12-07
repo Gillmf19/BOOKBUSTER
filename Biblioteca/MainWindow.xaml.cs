@@ -1,20 +1,24 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Biblioteca.Views; // Asegúrate de que este espacio de nombres coincide con el de tus UserControls
+using Biblioteca.Views;
 
 namespace Biblioteca
 {
     public partial class MainWindow : Window
     {
+        private object contenidoOriginal; // Cambiado a "object" para coincidir con el tipo de Content
+
         public MainWindow()
         {
             InitializeComponent();
+
+            // Guardar el contenido original al iniciar
+            contenidoOriginal = Content;
 
             // Asignar eventos Click a los botones
             UsuariosButton.Click += (s, e) => NavegarA(new Usuarios());
             LibrosButton.Click += (s, e) => NavegarA(new Libros());
             PrestamosButton.Click += (s, e) => NavegarA(new Prestamos());
-
         }
 
         /// <summary>
@@ -29,18 +33,19 @@ namespace Biblioteca
             // Agregar la nueva vista al contenedor
             grid.Children.Add(vista);
 
-            // Agregar un botón para regresar al menú principal
+            // Crear un botón para regresar al menú principal
             var volverMenuButton = new Button
             {
                 Content = "Volver al menú",
                 Foreground = System.Windows.Media.Brushes.White,
-                Background = System.Windows.Media.Brushes.Orange,
+                Background = System.Windows.Media.Brushes.Black,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(10)
             };
 
-            volverMenuButton.Click += (s, e) => Content = this.Content; // Volver al contenido principal
+            // Evento para restaurar el contenido original (el menú principal)
+            volverMenuButton.Click += (s, e) => Content = contenidoOriginal;
 
             // Agregar el botón al contenedor
             grid.Children.Add(volverMenuButton);
