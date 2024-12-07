@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -10,7 +10,6 @@ namespace Biblioteca.Views
 {
     public partial class Prestamos : UserControl
     {
-        // Ruta del archivo JSON donde guardaremos los datos
         private const string ArchivoPrestamos = "prestamos.json";
 
         public ObservableCollection<Prestamo> PrestamosList { get; set; }
@@ -19,30 +18,21 @@ namespace Biblioteca.Views
         {
             InitializeComponent();
 
-            // Inicializar la lista de préstamos y cargar datos desde el archivo
             PrestamosList = new ObservableCollection<Prestamo>();
             CargarPrestamos();
 
-            // Vincular la lista a la DataGrid
             TablaPrestamos.ItemsSource = PrestamosList;
         }
 
         private void BtnRegistrar_Click(object sender, RoutedEventArgs e)
         {
-            // Validar datos antes de agregar el préstamo
-            if (string.IsNullOrWhiteSpace(TxtUsuario.Text) || string.IsNullOrWhiteSpace(TxtLibro.Text))
+            if (string.IsNullOrWhiteSpace(TxtUsuario.Text) || string.IsNullOrWhiteSpace(TxtLibro.Text) ||
+                FechaPrestamo.SelectedDate == null || FechaDevolucion.SelectedDate == null)
             {
-                MessageBox.Show("Por favor, complete los campos Usuario y Libro.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            if (FechaPrestamo.SelectedDate == null || FechaDevolucion.SelectedDate == null)
-            {
-                MessageBox.Show("Por favor, seleccione las fechas de préstamo y devolución.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Crear un nuevo objeto de préstamo
             var nuevoPrestamo = new Prestamo
             {
                 Usuario = TxtUsuario.Text,
@@ -51,13 +41,9 @@ namespace Biblioteca.Views
                 FechaDevolucion = FechaDevolucion.SelectedDate.Value
             };
 
-            // Agregar el préstamo a la lista
             PrestamosList.Add(nuevoPrestamo);
-
-            // Guardar los datos en el archivo JSON
             GuardarPrestamos();
 
-            // Limpiar los campos
             TxtUsuario.Clear();
             TxtLibro.Clear();
             FechaPrestamo.SelectedDate = null;
@@ -68,12 +54,10 @@ namespace Biblioteca.Views
 
         private void CargarPrestamos()
         {
-            // Verificar si el archivo existe antes de intentar cargarlo
             if (File.Exists(ArchivoPrestamos))
             {
                 try
                 {
-                    // Leer el archivo JSON y deserializar los datos
                     var json = File.ReadAllText(ArchivoPrestamos);
                     var prestamosGuardados = JsonSerializer.Deserialize<ObservableCollection<Prestamo>>(json);
 
@@ -96,7 +80,6 @@ namespace Biblioteca.Views
         {
             try
             {
-                // Serializar la lista de préstamos y guardarla en un archivo JSON
                 var json = JsonSerializer.Serialize(PrestamosList, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(ArchivoPrestamos, json);
             }
@@ -108,7 +91,6 @@ namespace Biblioteca.Views
 
         private void BtnBuscar_Click(object sender, RoutedEventArgs e)
         {
-            // Filtro básico para buscar préstamos
             string textoBusqueda = TxtBuscar.Text.ToLower();
             var prestamosFiltrados = PrestamosList
                 .Where(p => p.Usuario.ToLower().Contains(textoBusqueda) || p.Libro.ToLower().Contains(textoBusqueda));
@@ -118,44 +100,35 @@ namespace Biblioteca.Views
 
         private void TxtBuscar_GotFocus(object sender, RoutedEventArgs e)
         {
-            var textBox = sender as TextBox;
-            if (textBox != null && textBox.Text == "Buscar por usuario o libro")
+            if (TxtBuscar.Text == "Buscar por usuario o libro")
             {
-                textBox.Text = string.Empty;
-                textBox.Foreground = System.Windows.Media.Brushes.Black;
+                TxtBuscar.Text = string.Empty;
+                TxtBuscar.Foreground = System.Windows.Media.Brushes.Black;
             }
         }
 
         private void TxtBuscar_LostFocus(object sender, RoutedEventArgs e)
         {
-            var textBox = sender as TextBox;
-            if (textBox != null && string.IsNullOrWhiteSpace(textBox.Text))
+            if (string.IsNullOrWhiteSpace(TxtBuscar.Text))
             {
-                textBox.Text = "Buscar por usuario o libro";
-                textBox.Foreground = System.Windows.Media.Brushes.Gray;
+                TxtBuscar.Text = "Buscar por usuario o libro";
+                TxtBuscar.Foreground = System.Windows.Media.Brushes.Gray;
             }
         }
 
-        // Método que maneja la eliminación de un préstamo
         private void BtnEliminar_Click(object sender, RoutedEventArgs e)
         {
-            // Verificar si hay una fila seleccionada en la DataGrid
             var prestamoSeleccionado = TablaPrestamos.SelectedItem as Prestamo;
 
             if (prestamoSeleccionado != null)
             {
-                // Preguntar al usuario si está seguro de eliminar el préstamo
                 var resultado = MessageBox.Show($"¿Estás seguro de eliminar el préstamo de '{prestamoSeleccionado.Libro}'?",
-                                                 "Confirmar Eliminación", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    "Confirmar Eliminación", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (resultado == MessageBoxResult.Yes)
                 {
-                    // Eliminar el préstamo de la lista
                     PrestamosList.Remove(prestamoSeleccionado);
-
-                    // Guardar los cambios en el archivo JSON
                     GuardarPrestamos();
-
                     MessageBox.Show("Préstamo eliminado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
@@ -166,7 +139,6 @@ namespace Biblioteca.Views
         }
     }
 
-    // Clase de préstamo
     public class Prestamo
     {
         public string Usuario { get; set; }
